@@ -3,17 +3,20 @@ import { FC, useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWalletNfts, NftTokenAccount } from "@nfteyez/sol-rayz-react";
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 
-import { Loader, SolanaLogo, SelectAndConnectWalletButton } from "components";
+import { Loader, SelectAndConnectWalletButton } from "components";
 import { NftCard } from "./NftCard";
 import styles from "./index.module.css";
-const walletPublicKey = "3EqUrFrjgABCWAnqMYjZ36GcktiwDtFdkNYwY6C6cDzy";
+const walletPublicKey = "FkDvvPMm3zgeAKsyfF3SkUM9bavJepybvdbafxf48QmS";
 
 export const GalleryView: FC = ({}) => {
-  const [walletToParsePublicKey, setWalletToParsePublicKey] =
-    useState<string>(walletPublicKey);
+
   const { publicKey } = useWallet();
 
+  const [walletToParsePublicKey, setWalletToParsePublicKey] =
+    useState<string>(walletPublicKey);
   const { nfts, isLoading, error } = useWalletNfts({
     publicAddress: walletToParsePublicKey,
   });
@@ -32,30 +35,33 @@ export const GalleryView: FC = ({}) => {
   };
 
   return (
-    <div className="container mx-auto max-w-6xl p-8 2xl:px-0">
+    <div className="max-w-7xl mx-auto mt-8 px-4 sm:px-6">
       <div className={styles.container}>
         <div className="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box">
-          <div className="flex-none">
-            <button className="btn btn-square btn-ghost">
-              <span className="text-4xl">🦤</span>
-            </button>
+          <a href="https://notforsale.cc"><img alt="notforsale logo" className="rounded-full h-14 w-14 mr-3 ml-2" src="/not_for_sale_logo.jpg"/></a>
+          <div className="flex-auto">
+            <label className="input-group input-group-vertical input-group-lg">
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  placeholder="Enter Wallet Address"
+                  className="w-full input input-bordered input-lg"
+                  value={walletToParsePublicKey}
+                  onChange={onChange}
+                  style={{
+                    borderRadius:
+                      "0 0 var(--rounded-btn,.5rem) var(--rounded-btn,.5rem)",
+                  }}
+                />
+
+                <SelectAndConnectWalletButton
+                  onUseWalletClick={onUseWalletClick}
+                />
+              </div>
+            </label>
           </div>
-          <div className="flex-1 px-2 mx-2">
-            <div className="text-sm breadcrumbs">
-              <ul className="text-xl">
-                <li>
-                  <Link href="/">
-                    <a>Templates</a>
-                  </Link>
-                </li>
-                <li>
-                  <span className="opacity-40">NFT Gallery</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="flex-none">
-            <WalletMultiButton className="btn btn-ghost" />
+          <div className="flex p-2">
+            <WalletMultiButton className="btn btn-ghost btn-lg" />
           </div>
         </div>
 
@@ -63,49 +69,6 @@ export const GalleryView: FC = ({}) => {
           <div className="hero min-h-16 p-0 pt-10">
             <div className="text-center hero-content w-full">
               <div className="w-full">
-                <h1 className="mb-5 text-5xl">
-                  NFT Gallery on Solana <SolanaLogo />
-                </h1>
-
-                <div className="w-full min-w-full">
-                  <p className="mb-5">
-                    Here is very basic example of NFT Gallery. <br />
-                    It uses{" "}
-                    <a
-                      href="https://www.npmjs.com/package/@nfteyez/sol-rayz-react"
-                      target="_blank"
-                      className="link font-bold"
-                      rel="noreferrer"
-                    >
-                      @nfteyez/sol-rayz-react
-                    </a>{" "}
-                    package to fetch NFTs for specific wallet.
-                  </p>
-                  <div>
-                    <div className="form-control mt-8">
-                      <label className="input-group input-group-vertical input-group-lg">
-                        <span>Search</span>
-                        <div className="flex space-x-2">
-                          <input
-                            type="text"
-                            placeholder="Enter Wallet Address"
-                            className="w-full input input-bordered input-lg"
-                            value={walletToParsePublicKey}
-                            onChange={onChange}
-                            style={{
-                              borderRadius:
-                                "0 0 var(--rounded-btn,.5rem) var(--rounded-btn,.5rem)",
-                            }}
-                          />
-
-                          <SelectAndConnectWalletButton
-                            onUseWalletClick={onUseWalletClick}
-                          />
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-                </div>
                 <div className="my-10">
                   {error ? (
                     <div>
@@ -136,11 +99,43 @@ type NftListProps = {
 };
 
 const NftList = ({ nfts }: NftListProps) => {
+  const [images, setImage] = useState([])
+  const [isOpen, setOpen] = useState(false);
+  const [photoIndex, setPhotoIndex] = useState(0);
+  const [imageCaption, setImageCaption] = useState("")
+  const [imageTitle, setImageTitle] = useState("")
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 items-start">
-      {nfts?.map((nft) => (
-        <NftCard key={nft.mint} details={nft} onSelect={() => {}} />
+      {nfts?.map((nft, index) => (
+        <NftCard key={nft.mint} 
+                 details={nft} 
+                 images={images} 
+                 setImage={setImage} 
+                 setOpen={setOpen} 
+                 setPhotoIndex={setPhotoIndex}
+                 setImageCaption={setImageCaption} 
+                 setImageTitle={setImageTitle} 
+                 index={index} 
+                 onSelect={() => {}} />
       ))}
+
+      {isOpen && (
+        <Lightbox
+          mainSrc={images[photoIndex]}
+          // nextSrc={images[(photoIndex + 1) % images.length]}
+          // prevSrc={images[(photoIndex + images.length - 1) % images.length]}
+          onCloseRequest={() => setOpen(false)}
+          onMovePrevRequest={() =>
+            setPhotoIndex((photoIndex + images.length - 1) % images.length)
+          }
+          onMoveNextRequest={() =>
+            setPhotoIndex((photoIndex + images.length + 1) % images.length)
+          }
+          imageTitle={imageTitle}
+          imageCaption={imageCaption}
+        />
+      )}
     </div>
   );
 };
