@@ -35,7 +35,7 @@ export const GalleryView: FC = ({}) => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto mt-8 px-4 sm:px-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6">
       <div className={styles.container}>
         <div className="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box">
           <a href="https://notforsale.cc"><img alt="notforsale logo" className="rounded-full h-14 w-14 mr-3 ml-2" src="/not_for_sale_logo.jpg"/></a>

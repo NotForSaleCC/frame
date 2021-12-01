@@ -6,7 +6,7 @@ const Home: NextPage = (props) => {
   return (
     <div>
       <Head>
-        <title>Not for Sale</title>
+        <title>Not for Sale: Frame</title>
         <meta name="description" content="The frame app from NotForSale collection" />
       </Head>
       <GalleryView />
