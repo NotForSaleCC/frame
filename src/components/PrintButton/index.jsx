@@ -1,81 +1,90 @@
-import { useState, useEffect } from "react";
-import styles from "./index.module.css"
+import { useEffect } from "react";
+import styles from "./index.module.css";
 
-export const PrintButton = ({ dropdownOpen, setDropdownOpen, devices, image, authenticated }) => {
-
-    const openDropdown = () => {
-        if(authenticated) {
-            setDropdownOpen(!dropdownOpen)
-        } else {
-            alert("Please authenticate first")
-        }
+export const PrintButton = ({
+  dropdownOpen,
+  setDropdownOpen,
+  devices,
+  image,
+  authenticated,
+}) => {
+  const openDropdown = () => {
+    if (authenticated) {
+      if (devices) {
+        setDropdownOpen(!dropdownOpen);
+      } else {
+        alert("You need to get the devices first!");
+      }
+    } else {
+      alert("Please authenticate first");
     }
+  };
 
-    const printPicture = (client_id) => {
-        console.log(image)
+  const printPicture = (client_id) => {
+    console.log(image);
 
-        let payload = new FormData();
-        let token = `Bearer ${window.sessionStorage.token}`
+    let payload = new FormData();
+    let token = `Bearer ${window.sessionStorage.token}`;
 
-        payload.append("client_id", client_id)
-        payload.append("image_url", image)
-        payload.append("action", "draw")
+    payload.append("client_id", client_id);
+    payload.append("image_url", image);
+    payload.append("action", "draw");
 
-        console.log(token)
+    console.log(token);
 
-        fetch('http://localhost:4000/api/v1/frames/print', {
-            method: 'POST',
-            body: payload,
-            headers: {
-                Accept: 'application/json',
-                Authorization: token
-            },
-        }).then(response => response.json())
-            .then(json => {
-                console.log('Success:', json);
-            }).catch(error => {
-                console.error('Error:', error);
-            });
+    fetch("http://localhost:4000/api/v1/frames/print", {
+      method: "POST",
+      body: payload,
+      headers: {
+        Accept: "application/json",
+        Authorization: token,
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        console.log("Success:", json);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  useEffect(() => {
+    if (dropdownOpen) {
+      const handler = (e) => {
+        console.log(e);
+        setDropdownOpen(false);
+      };
+
+      window.addEventListener("click", handler);
+
+      return () => {
+        window.removeEventListener("click", handler);
+      };
     }
+  }, [dropdownOpen]);
 
-    useEffect(() => {
-        if (dropdownOpen) {
-            const handler = (e) => {
-                console.log(e)
-                setDropdownOpen(false)
-            }
-
-            window.addEventListener("click", handler)
-
-            return () => {
-                window.removeEventListener("click", handler)
-            }
-        }
-    }, [dropdownOpen])
-
-    return (
-        <div>
+  return (
+    <div>
+      <button
+        className="bg-transparent hover:btn-secondary font-semibold py-2 px-4 border hover:border-transparent rounded w-full"
+        onClick={openDropdown}
+      >
+        Print
+      </button>
+      {devices && dropdownOpen && (
+        <div className={styles.dropdown}>
+          {devices?.map(({ client_id, id, topic }) => (
             <button
-                className="bg-transparent hover:btn-secondary font-semibold py-2 px-4 border hover:border-transparent rounded w-full"
-                onClick={openDropdown}
+              key={id}
+              className="bg-transparent hover:btn-primary font-semibold py-2 px-4 border hover:border-transparent rounded w-full"
+              onClick={() => printPicture(client_id)}
             >
-                Print
+              {client_id} - {topic}
             </button>
-            {dropdownOpen &&
-                <div className={styles.dropdown}>
-                    {
-                        devices?.map(({ client_id, id, topic }) => (
-                            <button
-                                key={id}
-                                className="bg-transparent hover:btn-primary font-semibold py-2 px-4 border hover:border-transparent rounded w-full"
-                                onClick={() => printPicture(client_id)}
-                            >
-                                {client_id} - {topic}
-                            </button>
-                        ))
-                    }
-                </div>
-            }
+          ))}
         </div>
-    )
-}
+      )}
+    </div>
+  );
+};

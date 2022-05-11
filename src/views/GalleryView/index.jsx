@@ -2,8 +2,8 @@ import { useEffect, useState, createContext } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useWalletNfts, NftTokenAccount } from "@nfteyez/sol-rayz-react";
-import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css';
+import Lightbox from "react-image-lightbox";
+import "react-image-lightbox/style.css";
 
 import { Loader, SelectAndConnectWalletButton } from "components";
 import { NftCard } from "./NftCard";
@@ -12,13 +12,15 @@ import { UserSettingsButton } from "components/UserSettingsButton";
 const walletPublicKey = "FkDvvPMm3zgeAKsyfF3SkUM9bavJepybvdbafxf48QmS";
 
 export const GalleryView = () => {
-  const [authenticated, setAuthenticated] = useState(window.sessionStorage?.token)
+  const [authenticated, setAuthenticated] = useState(
+    window.sessionStorage?.token
+  );
 
   const { publicKey } = useWallet();
 
   const [walletToParsePublicKey, setWalletToParsePublicKey] =
     useState(walletPublicKey);
-    
+
   const { nfts, isLoading, error } = useWalletNfts({
     publicAddress: walletToParsePublicKey,
   });
@@ -36,35 +38,43 @@ export const GalleryView = () => {
     }
   };
 
-  const [devices, setDevices] = useState([]);
+  const [devices, setDevices] = useState(null);
 
   useEffect(() => {
-    if (authenticated && devices?.length <= 0) {
-      let token = `Bearer ${window.sessionStorage.token}`
+    if (authenticated && !devices) {
+      let token = `Bearer ${window.sessionStorage.token}`;
 
-      console.log(token)
+      console.log(token);
 
-      fetch('http://localhost:4000/api/v1/frames', {
-        method: 'GET',
+      fetch("http://localhost:4000/api/v1/frames", {
+        method: "GET",
         headers: {
-          Accept: 'application/json',
-          Authorization: token
+          Accept: "application/json",
+          Authorization: token,
         },
-      }).then(response => response.json())
-        .then(json => {
-          setDevices(json.data)
-          console.log('Success:', json);
-        }).catch(error => {
-          console.error('Error:', error);
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          setDevices(json.data);
+          console.log("Success:", json);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
         });
-      }
-    }, [devices, authenticated])
+    }
+  }, [devices, authenticated]);
 
   return (
     <div className="max-w-7xl mx-auto">
       <div className={styles.container}>
         <div className="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box">
-          <a href="https://notforsale.cc"><img alt="notforsale logo" className="rounded-full h-14 w-14 mr-3 ml-2" src="/not_for_sale_logo.jpg" /></a>
+          <a href="https://notforsale.cc">
+            <img
+              alt="notforsale logo"
+              className="rounded-full h-14 w-14 mr-3 ml-2"
+              src="/not_for_sale_logo.jpg"
+            />
+          </a>
           <div className="flex-auto">
             <label className="input-group input-group-vertical input-group-lg">
               <div className="flex space-x-2">
@@ -90,7 +100,10 @@ export const GalleryView = () => {
             <WalletMultiButton className="btn btn-ghost btn-lg" />
           </div>
           <div>
-            <UserSettingsButton authenticated={authenticated} setAuthenticated={setAuthenticated} />
+            <UserSettingsButton
+              authenticated={authenticated}
+              setAuthenticated={setAuthenticated}
+            />
           </div>
         </div>
 
@@ -111,7 +124,11 @@ export const GalleryView = () => {
                       <Loader />
                     </div>
                   ) : (
-                    <NftList nfts={nfts} devices={devices} authenticated={authenticated} />
+                    <NftList
+                      nfts={nfts}
+                      devices={devices}
+                      authenticated={authenticated}
+                    />
                   )}
                 </div>
               </div>
@@ -123,17 +140,18 @@ export const GalleryView = () => {
   );
 };
 
-const NftList = ({nfts, devices, authenticated}) => {
-  const [images, setImage] = useState([])
+const NftList = ({ nfts, devices, authenticated }) => {
+  const [images, setImage] = useState([]);
   const [isOpen, setOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
-  const [imageCaption, setImageCaption] = useState("")
-  const [imageTitle, setImageTitle] = useState("")
+  const [imageCaption, setImageCaption] = useState("");
+  const [imageTitle, setImageTitle] = useState("");
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 items-start">
       {nfts?.map((nft, index) => (
-        <NftCard key={nft.mint}
+        <NftCard
+          key={nft.mint}
           devices={devices}
           details={nft}
           images={images}
@@ -144,7 +162,8 @@ const NftList = ({nfts, devices, authenticated}) => {
           setImageTitle={setImageTitle}
           index={index}
           authenticated={authenticated}
-          onSelect={() => { }} />
+          onSelect={() => {}}
+        />
       ))}
 
       {isOpen && (

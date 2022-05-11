@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import useSWR from "swr";
 import { EyeOffIcon } from "@heroicons/react/outline";
-import styles from "./index.module.css"
+import styles from "./index.module.css";
 import { PrintButton } from "components/PrintButton";
 
 import { fetcher } from "utils/fetcher";
@@ -18,7 +18,7 @@ export const NftCard = ({
   index,
   authenticated,
   onSelect,
-  onTokenDetailsFetched = () => { },
+  onTokenDetailsFetched = () => {},
 }) => {
   const [fallbackImage, setFallbackImage] = useState(false);
   const { name, uri, symbol } = details?.data ?? {};
@@ -41,7 +41,6 @@ export const NftCard = ({
     if (image) {
       setImage([...images, image]);
     }
-
   }, [data, error]);
 
   const onImageError = () => setFallbackImage(true);
@@ -53,14 +52,21 @@ export const NftCard = ({
     setImageTitle(name);
     setImageCaption(description);
     setImageTitle(name);
-  }
+  };
 
-  const [dropdownOpen, setDropdownOpen] = useState(false)
-  
-  console.log(dropdownOpen)
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  console.log(dropdownOpen);
   return (
-    <div className={`${dropdownOpen ? styles.opened : ""} overflow-visible card bordered max-w-xs compact rounded-md cursor-pointer`}>
-      <figure className="min-h-16 animation-pulse-color" onClick={() => openModal(index)}>
+    <div
+      className={`${
+        dropdownOpen ? styles.opened : ""
+      } overflow-visible card bordered max-w-xs compact rounded-md cursor-pointer`}
+    >
+      <figure
+        className="min-h-16 animation-pulse-color"
+        onClick={() => openModal(index)}
+      >
         {!fallbackImage || !error ? (
           <img
             src={image}
@@ -79,8 +85,8 @@ export const NftCard = ({
         <h2 className="card-title text-sm text-left">{name}</h2>
         <PrintButton
           dropdownOpen={dropdownOpen}
-          setDropdownOpen={setDropdownOpen} 
-          devices={devices} 
+          setDropdownOpen={setDropdownOpen}
+          devices={devices}
           image={image}
           authenticated={authenticated}
         />
