@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 const registerDevice = (topic) => {
   let payload = new FormData();
 
@@ -15,16 +13,21 @@ const registerDevice = (topic) => {
         Accept: "application/json",
         Authorization: token,
       },
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        delete window.sessionStorage.device_id;
+    }).then((response) => {
+      if (response.status === 201) {
+        return response.json();
+      } else {
+        return response.json().then((error) => {
+          throw error;
+        });
+      }
+    }).then((data) => {
+      delete window.sessionStorage.device_id;
 
-        console.log("Success:", json);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      console.log(data);
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 };
 

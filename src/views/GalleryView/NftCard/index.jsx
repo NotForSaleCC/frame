@@ -3,6 +3,7 @@ import useSWR from "swr";
 import { EyeOffIcon } from "@heroicons/react/outline";
 import styles from "./index.module.css";
 import { PrintButton } from "components/PrintButton";
+import Image from 'next/image'
 
 import { fetcher } from "utils/fetcher";
 
@@ -18,7 +19,7 @@ export const NftCard = ({
   index,
   authenticated,
   onSelect,
-  onTokenDetailsFetched = () => {},
+  onTokenDetailsFetched = () => { },
 }) => {
   const [fallbackImage, setFallbackImage] = useState(false);
   const { name, uri, symbol } = details?.data ?? {};
@@ -55,23 +56,27 @@ export const NftCard = ({
   };
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  if(!image) return null;
 
   console.log(dropdownOpen);
   return (
     <div
-      className={`${
-        dropdownOpen ? styles.opened : ""
-      } overflow-visible card bordered max-w-xs compact rounded-md cursor-pointer`}
+      className={`${dropdownOpen ? styles.opened : ""
+        } overflow-visible card bordered max-w-xs compact rounded-md cursor-pointer`}
     >
       <figure
         className="min-h-16 animation-pulse-color"
         onClick={() => openModal(index)}
       >
         {!fallbackImage || !error ? (
-          <img
+          <Image
             src={image}
+            width={265}
+            height={265}
+            layout="responsive"
             onError={onImageError}
             className="bg-gray-800 object-cover"
+            alt={image}
           />
         ) : (
           // Fallback when preview isn't available

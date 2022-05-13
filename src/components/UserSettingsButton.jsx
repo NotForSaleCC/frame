@@ -39,21 +39,20 @@ export const UserSettingsButton = ({ authenticated, setAuthenticated }) => {
       headers: {
         Accept: "application/json",
       },
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.data.token) {
+    }).then((response) => {
+      if (response.status === 201) {
+        response.json().then((json) => {
           window.sessionStorage.token = json.data.token;
           setAuthenticated(true);
-        } else if (json.status === "not_found") {
+        });
+      } else {
+        return response.json().then((error) => {
           setError("Wrong email or password");
-        }
 
-        console.log("Success:", json);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+          throw error;
+        });
+      }
+    });
   }
 
   const signOut = () => {
