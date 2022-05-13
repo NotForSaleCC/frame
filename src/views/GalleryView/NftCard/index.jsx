@@ -76,7 +76,7 @@ export const NftCard = ({
             layout="responsive"
             onError={onImageError}
             className="bg-gray-800 object-cover"
-            alt={image}
+            alt={name}
           />
         ) : (
           // Fallback when preview isn't available

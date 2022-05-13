@@ -2,6 +2,7 @@ import { useState, Fragment, useEffect } from "react";
 import Popup from "./popup";
 import { useRouter } from "next/router";
 import registerDevice from "../hooks/registerDevice";
+import Link from "next/link";
 
 export const UserSettingsButton = ({ authenticated, setAuthenticated }) => {
   const router = useRouter();
@@ -135,6 +136,9 @@ export const UserSettingsButton = ({ authenticated, setAuthenticated }) => {
                   >
                     Sign In
                   </button>
+                  <span className="pl-4">
+                    <Link href="/signup">Sign Up</Link>
+                  </span>
                 </div>
               </form>
             )}
