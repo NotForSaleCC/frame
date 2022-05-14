@@ -1,18 +1,16 @@
 const registerDevice = (topic) => {
-  let payload = new FormData();
-
-  payload.append("frame[client_id]", "yo");
-  payload.append("frame[topic]", topic);
-
-  let token = `Bearer ${window.sessionStorage.token}`;
+  const token = `Bearer ${window.sessionStorage.token}`;
+  
   if (topic) {
     fetch("http://localhost:4000/api/v1/frames", {
       method: "POST",
-      body: payload,
+      body: JSON.stringify({
+        frame: { client_id: "yo", topic: topic },
+      }),
       headers: {
-        Accept: "application/json",
+        'Content-Type': 'application/json',
         Authorization: token,
-      },
+      }
     }).then((response) => {
       if (response.status === 201) {
         return response.json();

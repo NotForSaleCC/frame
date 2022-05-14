@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import type { NextPage } from "next";
 import { useRouter } from 'next/router'
 import Head from "next/head";
-import registerDevice from "hooks/registerDevice";
 
 const Devices: NextPage = (props) => {
   const router = useRouter()
