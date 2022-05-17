@@ -1,7 +1,7 @@
 import { useState, Fragment, useEffect } from "react";
 import Popup from "./popup";
 import { useRouter } from "next/router";
-import registerDevice from "../hooks/registerDevice";
+import registerDevice from "../utils/registerDevice";
 import SignInView from "../views/SignInView";
 import SignUpView from "../views/SignUpView";
 
@@ -12,10 +12,19 @@ export const UserSettingsButton = ({ authenticated, setAuthenticated }) => {
   const [showPopup, setShowPopup] = useState(login);
   const [deviceRegistered, setDeviceRegistered] = useState(false);
   const [signUp, setSignUp] = useState(false);
+  const [registerDeviceView, setRegisterDeviceView] = useState(false);
 
   useEffect(() => {
+    const encodedToken = window.sessionStorage.encodedToken
+    console.log('token', encodedToken)
     if (authenticated && !deviceRegistered) {
-      registerDevice(window.sessionStorage.device_id);
+      // decode
+      if(!encodedToken) return null;
+      
+      const decodedStr = atob(encodedToken)
+
+      const {client_id: clientId, topic: topic} = JSON.parse(decodedStr);
+      registerDevice(clientId, topic);
       setDeviceRegistered(true);
     }
   });
@@ -30,8 +39,8 @@ export const UserSettingsButton = ({ authenticated, setAuthenticated }) => {
       {showPopup && (
         <Popup onClose={() => {
           setShowPopup(false)
-          setSignUp(false)}
-        }>
+          setSignUp(false)
+        }}>
           <>
             {authenticated && (
               <div>

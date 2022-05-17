@@ -9,7 +9,8 @@ const Devices: NextPage = (props) => {
   const { id } = router.query
   
   useEffect(() => {
-    window.sessionStorage.device_id = id;
+    window.sessionStorage.encodedToken = id;
+    
     if(window.sessionStorage.token) {
       router.push('/')
     } else {

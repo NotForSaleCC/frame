@@ -11,6 +11,8 @@ import styles from "./index.module.css";
 import { UserSettingsButton } from "components/UserSettingsButton";
 const walletPublicKey = "FkDvvPMm3zgeAKsyfF3SkUM9bavJepybvdbafxf48QmS";
 
+import RegisterDeviceView from "../RegisterDeviceView";
+
 export const GalleryView = () => {
   const [authenticated, setAuthenticated] = useState(
     window.sessionStorage?.token
@@ -104,6 +106,9 @@ export const GalleryView = () => {
               authenticated={authenticated}
               setAuthenticated={setAuthenticated}
             />
+            <div>
+              <RegisterDeviceView />
+            </div>
           </div>
         </div>
 

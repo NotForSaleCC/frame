@@ -1,11 +1,13 @@
-const registerDevice = (topic) => {
+import PropTypes from 'prop-types';
+
+const registerDevice = (clientId: String, topic: String) => {
   const token = `Bearer ${window.sessionStorage.token}`;
   
   if (topic) {
     fetch("http://localhost:4000/api/v1/frames", {
       method: "POST",
       body: JSON.stringify({
-        frame: { client_id: "yo", topic: topic },
+        frame: { client_id: clientId, topic: topic },
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -20,13 +22,18 @@ const registerDevice = (topic) => {
         });
       }
     }).then((data) => {
-      delete window.sessionStorage.device_id;
+      delete window.sessionStorage.encodedToken;
 
       console.log(data);
     }).catch((error) => {
       console.log(error);
     });
   }
+};
+
+
+registerDevice.PropTypes = {
+  topic: PropTypes.string,
 };
 
 export default registerDevice;
