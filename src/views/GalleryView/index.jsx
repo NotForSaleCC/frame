@@ -132,6 +132,7 @@ export const GalleryView = () => {
                     <NftList
                       nfts={nfts}
                       devices={devices}
+                      setDevices={setDevices}
                       authenticated={authenticated}
                     />
                   )}
@@ -145,7 +146,7 @@ export const GalleryView = () => {
   );
 };
 
-const NftList = ({ nfts, devices, authenticated }) => {
+const NftList = ({ nfts, devices, setDevices, authenticated }) => {
   const [images, setImage] = useState([]);
   const [isOpen, setOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
@@ -158,6 +159,7 @@ const NftList = ({ nfts, devices, authenticated }) => {
         <NftCard
           key={nft.mint}
           devices={devices}
+          setDevices={setDevices}
           details={nft}
           images={images}
           setImage={setImage}

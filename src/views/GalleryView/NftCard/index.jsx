@@ -9,6 +9,7 @@ import { fetcher } from "utils/fetcher";
 
 export const NftCard = ({
   devices,
+  setDevices,
   details,
   images,
   setImage,
@@ -92,6 +93,7 @@ export const NftCard = ({
           dropdownOpen={dropdownOpen}
           setDropdownOpen={setDropdownOpen}
           devices={devices}
+          setDevices={setDevices}
           image={image}
           authenticated={authenticated}
         />

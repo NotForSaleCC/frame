@@ -5,6 +5,7 @@ export const PrintButton = ({
   dropdownOpen,
   setDropdownOpen,
   devices,
+  setDevices,
   image,
   authenticated,
 }) => {
@@ -18,6 +19,23 @@ export const PrintButton = ({
     } else {
       alert("Please authenticate first");
     }
+  };
+
+  const deleteFrame = (id) => {
+    fetch(`http://localhost:4000/api/v1/frames/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${window.sessionStorage.token}`,
+      },
+    }).then((response) => {
+      if (response.status === 204) {
+        setDevices(devices.filter((device) => device.id !== id));
+        alert("Frame deleted");
+      } else {
+        alert("Something went wrong");
+      }
+    });
   };
 
   const printPicture = (client_id) => {
@@ -74,14 +92,27 @@ export const PrintButton = ({
       </button>
       {devices && dropdownOpen && (
         <div className={styles.dropdown}>
-          {devices?.map(({ client_id, id, topic }) => (
-            <button
-              key={id}
-              className="bg-transparent hover:btn-primary font-semibold py-2 px-4 border hover:border-transparent rounded w-full"
-              onClick={() => printPicture(client_id)}
-            >
-              {client_id} - {topic}
-            </button>
+          {devices?.map(({ client_id, id }) => (
+            <div className="flex flex-row">
+              <div className="w-full">
+                <button
+                  key={id}
+                  className="bg-transparent hover:btn-secondary font-semibold py-2 px-4 border hover:border-transparent rounded w-full"
+                  onClick={() => printPicture(client_id)}
+                >
+                  {client_id}
+                </button>
+              </div>
+              <div>
+                <button className="bg-transparent hover:btn-primary font-semibold py-2 px-4 border hover:border-transparent rounded w-full"
+                  onClick={() => deleteFrame(id)}>
+                  Delete
+                </button>
+              </div>
+
+
+            </div>
+
           ))}
         </div>
       )}

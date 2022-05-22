@@ -1,17 +1,9 @@
 import { useState, Fragment } from "react";
 import RegisterDevice from "../../components/RegisterDevice";
 import Popup from "../../components/popup";
-// import registerDevice from "../utils/registerDevice";
 
 export const RegisterDeviceView = () => {
-  // const [clientId, setClientId] = useState("");
-  // const [topic, setTopic] = useState("");
   const [showPopup, setShowPopup] = useState(false);
-
-  // const submitForm = function (e, clientId, topic) {
-  //   registerDevice(clientId, topic);
-  //   e.preventDefault();
-  // };
 
   return (
     <Fragment>
