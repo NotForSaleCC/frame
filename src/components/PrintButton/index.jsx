@@ -22,6 +22,10 @@ export const PrintButton = ({
   };
 
   const deleteFrame = (id) => {
+    if(!confirm(
+      "Are you sure you want to delete this frame?"
+    )) return null;
+
     fetch(`http://localhost:4000/api/v1/frames/${id}`, {
       method: "DELETE",
       headers: {
