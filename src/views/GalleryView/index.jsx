@@ -48,7 +48,7 @@ export const GalleryView = () => {
 
       console.log(token);
 
-      fetch("http://localhost:4000/api/v1/frames", {
+      fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/v1/frames`, {
         method: "GET",
         headers: {
           Accept: "application/json",

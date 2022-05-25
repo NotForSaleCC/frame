@@ -94,7 +94,7 @@ export const NftCard = ({
           setDropdownOpen={setDropdownOpen}
           devices={devices}
           setDevices={setDevices}
-          image={image}
+          imageUrl={image}
           authenticated={authenticated}
         />
       </div>

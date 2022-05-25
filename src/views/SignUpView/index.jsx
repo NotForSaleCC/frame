@@ -12,7 +12,7 @@ const SignUpView = ({ authenticated, setAuthenticated, setSignUp }) => {
   };
 
   async function signUp(email, password) {
-    await fetch("http://localhost:4000/api/v1/users/register", {
+    await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/v1/users/register`, {
       method: "POST",
       body: JSON.stringify({ user: { email: email, password: password } }),
       headers: {

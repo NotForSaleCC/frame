@@ -6,7 +6,7 @@ export const PrintButton = ({
   setDropdownOpen,
   devices,
   setDevices,
-  image,
+  imageUrl,
   authenticated,
 }) => {
   const openDropdown = () => {
@@ -22,11 +22,11 @@ export const PrintButton = ({
   };
 
   const deleteFrame = (id) => {
-    if(!confirm(
+    if (!confirm(
       "Are you sure you want to delete this frame?"
     )) return null;
 
-    fetch(`http://localhost:4000/api/v1/frames/${id}`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/v1/frames/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -42,23 +42,16 @@ export const PrintButton = ({
     });
   };
 
-  const printPicture = (client_id) => {
-    console.log(image);
-
-    let payload = new FormData();
+  const printPicture = (clientId) => {
     let token = `Bearer ${window.sessionStorage.token}`;
+    let payload = JSON.stringify({ client_id: clientId, image_url: imageUrl, action: "draw" });
+    console.log(payload)
 
-    payload.append("client_id", client_id);
-    payload.append("image_url", image);
-    payload.append("action", "draw");
-
-    console.log(token);
-
-    fetch("http://localhost:4000/api/v1/frames/print", {
+    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/v1/frames/print`, {
       method: "POST",
       body: payload,
       headers: {
-        Accept: "application/json",
+        'Content-Type': 'application/json',
         Authorization: token,
       },
     })
@@ -101,16 +94,27 @@ export const PrintButton = ({
               <div className="w-full">
                 <button
                   key={id}
-                  className="bg-transparent hover:btn-secondary font-semibold py-2 px-4 border hover:border-transparent rounded w-full"
+                  className="bg-transparent border-transparent hover:btn-secondary font-semibold py-2 px-4 border hover:border-transparent rounded w-full"
                   onClick={() => printPicture(client_id)}
                 >
                   {client_id}
                 </button>
               </div>
               <div>
-                <button className="bg-transparent hover:btn-primary font-semibold py-2 px-4 border hover:border-transparent rounded w-full"
+                <button className="bg-transparent border-transparent hover:btn-primary font-semibold py-2 px-4 border hover:border-transparent rounded w-full"
                   onClick={() => deleteFrame(id)}>
-                  Delete
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    x="0px"
+                    y="0px"
+                    width="20px"
+                    heigt="20px"
+                    fill="#ffff"
+                    viewBox="0 0 459 459"
+                    xmlSpace="preserve"
+                  >
+                    <path d="M229.5 0C102.751 0 0 102.751 0 229.5S102.751 459 229.5 459 459 356.249 459 229.5 356.249 0 229.5 0zm77.605 271.629c9.797 9.797 9.797 25.68 0 35.477a25.007 25.007 0 01-17.738 7.347c-6.42 0-12.84-2.449-17.738-7.347L229.5 264.977l-42.128 42.129a25.007 25.007 0 01-17.738 7.347c-6.42 0-12.84-2.449-17.738-7.347-9.797-9.796-9.797-25.68 0-35.477l42.129-42.129-42.129-42.129c-9.797-9.797-9.797-25.68 0-35.477s25.68-9.797 35.477 0l42.128 42.129 42.128-42.129c9.797-9.797 25.68-9.797 35.477 0 9.797 9.796 9.797 25.68 0 35.477l-42.13 42.129 42.129 42.129z" />
+                  </svg>
                 </button>
               </div>
 
