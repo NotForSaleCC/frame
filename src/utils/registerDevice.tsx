@@ -4,7 +4,7 @@ const registerDevice = (clientId: String, topic: String) => {
   const token = `Bearer ${window.sessionStorage.token}`;
   
   if (topic) {
-    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/v1/frames`, {
+    fetch("/api/v1/frames", {
       method: "POST",
       body: JSON.stringify({
         frame: { client_id: clientId, topic: topic },

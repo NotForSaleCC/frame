@@ -26,7 +26,7 @@ export const PrintButton = ({
       "Are you sure you want to delete this frame?"
     )) return null;
 
-    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/v1/frames/${id}`, {
+    fetch(`/api/v1/frames/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +47,7 @@ export const PrintButton = ({
     let payload = JSON.stringify({ client_id: clientId, image_url: imageUrl, action: "draw" });
     console.log(payload)
 
-    fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/v1/frames/print`, {
+    fetch("/api/v1/frames/print", {
       method: "POST",
       body: payload,
       headers: {
