@@ -41,6 +41,9 @@ const plugins = [
 ];
 
 const nextConfig = {
+  images: {
+    domains: ['www.arweave.net', 'arweave.net'],
+  },
   distDir: "build",
   swcMinify: true,
   webpack: (config, { isServer }) => {

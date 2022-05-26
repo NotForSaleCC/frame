@@ -1,23 +1,15 @@
 import { FC, useState, useEffect } from "react";
 import useSWR from "swr";
 import { EyeOffIcon } from "@heroicons/react/outline";
+import styles from "./index.module.css";
+import { PrintButton } from "components/PrintButton";
+import Image from 'next/image'
 
 import { fetcher } from "utils/fetcher";
 
-type Props = {
-  details: any;
-  images: string[];
-  setImage: any;
-  setOpen: any;
-  setPhotoIndex: any;
-  setImageCaption: any;
-  setImageTitle: any;
-  index: number;
-  onSelect: (id: string) => void;
-  onTokenDetailsFetched?: (props: any) => unknown;
-};
-
-export const NftCard: FC<Props> = ({
+export const NftCard = ({
+  devices,
+  setDevices,
   details,
   images,
   setImage,
@@ -26,8 +18,9 @@ export const NftCard: FC<Props> = ({
   setImageCaption,
   setImageTitle,
   index,
+  authenticated,
   onSelect,
-  onTokenDetailsFetched = () => {},
+  onTokenDetailsFetched = () => { },
 }) => {
   const [fallbackImage, setFallbackImage] = useState(false);
   const { name, uri, symbol } = details?.data ?? {};
@@ -47,34 +40,44 @@ export const NftCard: FC<Props> = ({
     if (!error && !!data) {
       onTokenDetailsFetched(data);
     }
-    if(image) {
+    if (image) {
       setImage([...images, image]);
     }
-
   }, [data, error]);
 
   const onImageError = () => setFallbackImage(true);
   const { image, description } = data ?? {};
 
-  // console.log("data", data)
-
-  const openModal = (index:number) => {
+  const openModal = (index) => {
     setOpen(true);
     setPhotoIndex(images.indexOf(image));
     setImageTitle(name);
     setImageCaption(description);
     setImageTitle(name);
-  }
+  };
 
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  if(!image) return null;
 
+  console.log(dropdownOpen);
   return (
-    <div className={`card bordered max-w-xs compact rounded-md cursor-pointer`} onClick={() => openModal(index)}>
-      <figure className="min-h-16 animation-pulse-color">
+    <div
+      className={`${dropdownOpen ? styles.opened : ""
+        } overflow-visible card bordered max-w-xs compact rounded-md cursor-pointer`}
+    >
+      <figure
+        className="min-h-16 animation-pulse-color"
+        onClick={() => openModal(index)}
+      >
         {!fallbackImage || !error ? (
-          <img
+          <Image
             src={image}
+            width={265}
+            height={265}
+            layout="responsive"
             onError={onImageError}
             className="bg-gray-800 object-cover"
+            alt={name}
           />
         ) : (
           // Fallback when preview isn't available
@@ -84,8 +87,16 @@ export const NftCard: FC<Props> = ({
           </div>
         )}
       </figure>
-      <div className="card-body">
+      <div className={`card-body ${styles.dropdownContainer}`}>
         <h2 className="card-title text-sm text-left">{name}</h2>
+        <PrintButton
+          dropdownOpen={dropdownOpen}
+          setDropdownOpen={setDropdownOpen}
+          devices={devices}
+          setDevices={setDevices}
+          imageUrl={image}
+          authenticated={authenticated}
+        />
       </div>
     </div>
   );

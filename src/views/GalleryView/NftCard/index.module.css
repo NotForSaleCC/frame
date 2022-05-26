@@ -1,0 +1,17 @@
+.dropdownContainer {
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0,0,0,0.8);
+    padding: 1rem;
+}
+
+.opened {
+    position: relative;
+    z-index: 100;
+}
