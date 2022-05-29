@@ -11,7 +11,7 @@ export const PrintButton = ({
 }) => {
   const openDropdown = () => {
     if (authenticated) {
-      if (devices) {
+      if (devices?.length > 0) {
         setDropdownOpen(!dropdownOpen);
       } else {
         alert("You need to get the devices first!");
