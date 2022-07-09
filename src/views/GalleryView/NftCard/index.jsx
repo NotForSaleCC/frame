@@ -70,12 +70,10 @@ export const NftCard = ({
         onClick={() => openModal(index)}
       >
         {!fallbackImage || !error ? (
-          <Image
+          <img
             src={image}
             width={265}
             height={265}
-            layout="responsive"
-            onError={onImageError}
             className="bg-gray-800 object-cover"
             alt={name}
           />
