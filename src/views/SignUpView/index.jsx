@@ -28,7 +28,7 @@ const SignUpView = ({ authenticated, setAuthenticated, setSignUp }) => {
         return response.json().then((error) => {
           for (const key in error.message) {
             setError(`${key}: ${error.message[key]}`);
-          } 
+          }
 
           throw error;
         });
@@ -54,14 +54,14 @@ const SignUpView = ({ authenticated, setAuthenticated, setSignUp }) => {
 
       <div className="mb-4">
         <label
-          className="block text-gray-700 text-sm font-bold mb-2"
+          className="block text-sm font-bold mb-2"
           htmlFor="username"
         >
           Email
         </label>
         <input
           className={`shadow appearance-none border ${error.length > 0 && "border-red-500"
-            } rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+            } rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline`}
           type="text"
           value={username}
           placeholder="Email"
@@ -71,14 +71,14 @@ const SignUpView = ({ authenticated, setAuthenticated, setSignUp }) => {
       </div>
       <div className="mb-6">
         <label
-          className="block text-gray-700 text-sm font-bold mb-2"
+          className="block text-sm font-bold mb-2"
           htmlFor="password"
         >
           Password
         </label>
         <input
           className={`shadow appearance-none border ${error.length > 0 && "border-red-500"
-            } rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
+            } rounded w-full py-2 px-3 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
           id="password"
           type="password"
           placeholder="******************"

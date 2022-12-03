@@ -42,10 +42,10 @@ const plugins = [
 
 const nextConfig = {
   images: {
-    domains: ['www.arweave.net', 'arweave.net'],
+    domains: ["www.arweave.net", "arweave.net"],
   },
   distDir: "build",
-  swcMinify: true,
+  swcMinify: false,
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback.fs = false;

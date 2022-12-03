@@ -1,17 +1,20 @@
 import { useEffect, useState, createContext } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { useWalletNfts, NftTokenAccount } from "@nfteyez/sol-rayz-react";
-import Lightbox from "react-image-lightbox";
-import "react-image-lightbox/style.css";
-
+import { useWalletNfts } from "@nfteyez/sol-rayz-react";
 import { Loader, SelectAndConnectWalletButton } from "components";
 import { NftCard } from "./NftCard";
 import styles from "./index.module.css";
 import { UserSettingsButton } from "components/UserSettingsButton";
+
 const walletPublicKey = "FkDvvPMm3zgeAKsyfF3SkUM9bavJepybvdbafxf48QmS";
 
+const { Connection } = require("@solana/web3.js");
+
 import RegisterDeviceView from "../RegisterDeviceView";
+
+console.log(process.env.NEXT_PUBLIC_SOLANA_ENDPOINT)
+
+export const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_ENDPOINT);
 
 export const GalleryView = () => {
   const [authenticated, setAuthenticated] = useState(
@@ -25,6 +28,7 @@ export const GalleryView = () => {
 
   const { nfts, isLoading, error } = useWalletNfts({
     publicAddress: walletToParsePublicKey,
+    connection
   });
 
   console.log("nfts", nfts);
@@ -98,9 +102,9 @@ export const GalleryView = () => {
               </div>
             </label>
           </div>
-          <div className="flex p-2">
+          {/* <div className="flex p-2">
             <WalletMultiButton className="btn btn-ghost btn-lg" />
-          </div>
+          </div> */}
           <div>
             <UserSettingsButton
               authenticated={authenticated}
@@ -148,10 +152,6 @@ export const GalleryView = () => {
 
 const NftList = ({ nfts, devices, setDevices, authenticated }) => {
   const [images, setImage] = useState([]);
-  const [isOpen, setOpen] = useState(false);
-  const [photoIndex, setPhotoIndex] = useState(0);
-  const [imageCaption, setImageCaption] = useState("");
-  const [imageTitle, setImageTitle] = useState("");
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 items-start">
@@ -163,32 +163,11 @@ const NftList = ({ nfts, devices, setDevices, authenticated }) => {
           details={nft}
           images={images}
           setImage={setImage}
-          setOpen={setOpen}
-          setPhotoIndex={setPhotoIndex}
-          setImageCaption={setImageCaption}
-          setImageTitle={setImageTitle}
           index={index}
           authenticated={authenticated}
           onSelect={() => {}}
         />
       ))}
-
-      {isOpen && (
-        <Lightbox
-          mainSrc={images[photoIndex]}
-          // nextSrc={images[(photoIndex + 1) % images.length]}
-          // prevSrc={images[(photoIndex + images.length - 1) % images.length]}
-          onCloseRequest={() => setOpen(false)}
-          onMovePrevRequest={() =>
-            setPhotoIndex((photoIndex + images.length - 1) % images.length)
-          }
-          onMoveNextRequest={() =>
-            setPhotoIndex((photoIndex + images.length + 1) % images.length)
-          }
-          imageTitle={imageTitle}
-          imageCaption={imageCaption}
-        />
-      )}
     </div>
   );
 };
