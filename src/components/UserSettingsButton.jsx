@@ -18,16 +18,15 @@ export const UserSettingsButton = ({ authenticated, setAuthenticated }) => {
     const encodedToken = window.sessionStorage.encodedToken
     console.log('token', encodedToken)
     if (authenticated && !deviceRegistered) {
-      // decode
-      if(!encodedToken) return null;
-      
+      if(!encodedToken) return undefined;
+
       const decodedStr = atob(encodedToken)
 
       const {client_id: clientId, topic: topic} = JSON.parse(decodedStr);
       registerDevice(clientId, topic);
       setDeviceRegistered(true);
     }
-  });
+  }, []);
 
   const signOut = () => {
     delete window.sessionStorage.token;
