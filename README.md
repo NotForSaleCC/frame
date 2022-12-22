@@ -1,32 +1,19 @@
-This project includes:
-
-- Next.JS
-- TypeScript
-- [@solana/wallet-adapter](https://github.com/solana-labs/wallet-adapter) and [@solana/web3.js](https://solana-labs.github.io/solana-web3.js) for interactions with wallets & blockchain.
-- Tailwind CSS (with [daisyUI](https://daisyui.com/))
-- react-image-lightbox
-
-Based on: @thuglabs/create-dapp-solana-nextjs
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-yarn
-yarn run dev
 ```
 
-// TODO
-If you deploy new Candy Machine you can update UI config here: `./src/config/candy-machine.config.js`.
+           :~77777!!!^:.
+        .~7J7^^::^^^~!77!~::::
+      ^7JJ~7~        .^7?JY?^:
+    ^7J5?. ^?:    .~7!~:..~?7.
+   !?!J?.   !7. ^7?!^      ^J!.
+  !?^JJ:    .JJ??~.         7Yx   NotForSale: Sustainable art for a sustainable future
+ ^J^^Y7     ~J5?.           7Yx                                          notforsale.cc
+.?J:^Y7.  :??^^J?:          7Yx
+ !Y7^JJ^ ^J7.  :?Y~.       ^J7
+  !YJJYJ7?^     .~J?~.    ~Y?.
+   :!?Y55J!^:::...:!J?!~^7Y?:
+      ^?77??JJJJJJJJJ?JYJ?^.
+           ..:::^^^^^^::.
 
-## Style
+```
 
-[Tailwind CSS](https://tailwindcss.com/) or [daisyUI](https://daisyui.com/) are selected tools for rapid style development.
-
-You can quickly change theme changing `daisy.themes` within `./tailwind.config.js`.
-More info here: https://daisyui.com/docs/default-themes
-
-This app encourage you to use CSS Modules over other style technics (like SASS/LESS, Styled Components, usual CSS).
-It have modular nature and supports modern CSS. [Read more on Next.JS site](https://nextjs.org/docs/basic-features/built-in-css-support).
-Anyway, if you want to connect LESS there is example code in `./next.config.js`
+A frontend implementation
