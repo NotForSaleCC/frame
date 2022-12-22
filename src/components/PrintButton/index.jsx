@@ -35,7 +35,7 @@ export const PrintButton = ({
     }).then((response) => {
       if (response.status === 204) {
         setDevices(devices.filter((device) => device.id !== id));
-        alert("Frame deleted");
+        setDropdownOpen(false);
       } else {
         alert("Something went wrong");
       }
@@ -62,22 +62,9 @@ export const PrintButton = ({
       .catch((error) => {
         console.error("Error:", error);
       });
+
+      setDropdownOpen(false);
   };
-
-  useEffect(() => {
-    if (dropdownOpen) {
-      const handler = (e) => {
-        console.log(e);
-        setDropdownOpen(false);
-      };
-
-      window.addEventListener("click", handler);
-
-      return () => {
-        window.removeEventListener("click", handler);
-      };
-    }
-  }, [dropdownOpen]);
 
   return (
     <div>
@@ -90,18 +77,18 @@ export const PrintButton = ({
       {devices && dropdownOpen && (
         <div className={styles.dropdown}>
           {devices?.map(({ client_id, id }) => (
-            <div className="flex flex-row">
+            <div key={client_id} className="flex flex-row">
               <div className="w-full">
                 <button
                   key={id}
-                  className="bg-transparent border-transparent hover:btn-secondary font-semibold py-2 px-4 border hover:border-transparent rounded w-full"
+                  className="text-white bg-transparent hover:border-white font-semibold py-2 px-4 border border-transparent rounded w-full"
                   onClick={() => printPicture(client_id)}
                 >
                   {client_id}
                 </button>
               </div>
               <div>
-                <button className="bg-transparent border-transparent hover:btn-primary font-semibold py-2 px-4 border hover:border-transparent rounded w-full"
+                <button className="bg-transparent hover:border-white font-semibold py-2 px-4 border border-transparent rounded w-full"
                   onClick={() => deleteFrame(id)}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
